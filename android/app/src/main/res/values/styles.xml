@@ -4,5 +4,10 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
+        <item name="colorPrimaryDark">#0AAD0A</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name ="android:colorBackground">#0AAD0A</item>
+        <item name="android:navigationBarColor">#0AAD0A</item>
+    </style>
 </resources>

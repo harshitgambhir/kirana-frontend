@@ -27,7 +27,7 @@ const FloatingCart = () => {
       <TouchableHighlight
         onPress={() => navigation.navigate('Cart')}
         style={{
-          backgroundColor: '#15803d',
+          backgroundColor: '#0AAD0A',
           borderRadius: 8,
           padding: 12,
         }}

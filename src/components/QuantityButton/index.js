@@ -15,7 +15,7 @@ const QuantityButton = ({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#15803d',
+        backgroundColor: '#0AAD0A',
         borderRadius: 4,
       }}>
       <TouchableWithoutFeedback onPress={onMinusPress}>

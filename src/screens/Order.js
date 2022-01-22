@@ -1,6 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
-import Button from '../components/Button';
+import { Image, ScrollView, View } from 'react-native';
 import Text from '../components/Text';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -65,7 +64,6 @@ const Order = ({ route, navigation }) => {
   const { data } = useQuery(['getOrder', route.params.id], () =>
     api.getOrder(route.params.id),
   );
-  console.log(data);
   if (!data) {
     return (
       <Loader
@@ -79,8 +77,8 @@ const Order = ({ route, navigation }) => {
   }
 
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         backgroundColor: '#e5e7eb',
       }}>
       <Text
@@ -101,13 +99,30 @@ const Order = ({ route, navigation }) => {
           padding: 16,
           backgroundColor: '#fff',
         }}>
-        <Text
-          fontWeight={800}
-          textStyle={{
-            fontSize: 18,
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          Pickup from
-        </Text>
+          <Text
+            fontWeight={800}
+            textStyle={{
+              fontSize: 18,
+            }}>
+            Pickup from
+          </Text>
+          <Text
+            fontWeight={600}
+            textStyle={{
+              fontSize: 14,
+              backgroundColor: '#deedd6',
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+            }}>
+            OTP : {data.order.otp}
+          </Text>
+        </View>
         <Text
           textStyle={{
             fontSize: 15,
@@ -195,7 +210,7 @@ const Order = ({ route, navigation }) => {
           <Text fontWeight={600}>₹{data.order.totalPrice}</Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

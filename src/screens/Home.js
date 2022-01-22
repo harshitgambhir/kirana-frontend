@@ -43,6 +43,7 @@ const Home = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 16,
+          paddingBottom: 60,
         }}>
         <View
           style={{
@@ -71,7 +72,7 @@ const Home = ({ navigation }) => {
             <View
               style={{
                 color: '#000',
-                backgroundColor: '#FFF5E4',
+                backgroundColor: '#deedd6',
                 padding: 10,
                 borderRadius: 12,
               }}>
@@ -142,7 +143,7 @@ const Home = ({ navigation }) => {
                     style={{
                       height: 82,
                       width: 82,
-                      backgroundColor: '#FFF5E4',
+                      backgroundColor: '#deedd6',
                       borderRadius: 12,
                     }}>
                     <Image source={{ uri: category.image }} />

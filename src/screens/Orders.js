@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import Button from '../components/Button';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import Text from '../components/Text';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -9,7 +8,7 @@ import { Loader } from 'react-native-feather';
 
 const Orders = ({ navigation }) => {
   const { data } = useQuery('getOrders', api.getOrders);
-  console.log(data);
+
   if (!data) {
     return (
       <Loader
@@ -22,60 +21,70 @@ const Orders = ({ navigation }) => {
     );
   }
 
-  return (
-    <View>
-      {data.orders.map((order, index) => {
-        return (
-          <TouchableOpacity
-            key={order.id}
-            activeOpacity={0.5}
-            onPress={() =>
-              navigation.navigate('Order', {
-                id: order.id,
-              })
-            }>
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        key={item.id}
+        activeOpacity={0.5}
+        onPress={() =>
+          navigation.navigate('Order', {
+            id: item.id,
+          })
+        }>
+        <View
+          style={{
+            padding: 16,
+          }}>
+          <Text
+            textStyle={{
+              fontSize: 14,
+              color: '#666',
+            }}>
+            placed on{' '}
+            {moment(item.createdAt).format('ddd, D MMM, hh:mm a').toLowerCase()}
+          </Text>
+          <View
+            style={{
+              marginTop: 16,
+            }}>
             <View
               style={{
-                padding: 16,
-                borderTopWidth: index ? 1 : 0,
-                borderTopColor: '#e5e7eb',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}>
-              <Text
-                textStyle={{
-                  fontSize: 14,
-                  color: '#666',
-                }}>
-                placed on{' '}
-                {moment(order.createdAt)
-                  .format('ddd, D MMM, hh:mm a')
-                  .toLowerCase()}
-              </Text>
-              <View
-                style={{
-                  marginTop: 16,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text fontWeight={800}>{order.totalQuantity} item(s)</Text>
-                  <Text fontWeight={600}>₹{order.totalPrice}</Text>
-                </View>
-                <Text
-                  textStyle={{
-                    marginTop: 8,
-                  }}
-                  fontWeight={600}>
-                  order id : {order.id}
-                </Text>
-              </View>
+              <Text fontWeight={800}>{item.totalQuantity} item(s)</Text>
+              <Text fontWeight={600}>₹{item.totalPrice}</Text>
             </View>
-          </TouchableOpacity>
+            <Text
+              textStyle={{
+                marginTop: 8,
+              }}
+              fontWeight={600}>
+              order id : {item.id}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <FlatList
+      data={data.orders}
+      renderItem={renderItem}
+      keyExtractor={item => item.id}
+      ItemSeparatorComponent={() => {
+        return (
+          <View
+            style={{
+              height: 1,
+              backgroundColor: '#e5e7eb',
+            }}
+          />
         );
-      })}
-    </View>
+      }}
+    />
   );
 };
 

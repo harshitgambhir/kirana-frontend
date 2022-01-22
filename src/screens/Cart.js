@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight, ScrollView } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Button from '../components/Button';
 import Text from '../components/Text';
@@ -179,7 +179,6 @@ const Cart = ({ navigation }) => {
 
   useEffect(() => {
     if (isSuccessAddOrder) {
-      console.log('aaaa');
       navigation.navigate('Order', {
         id: dataAddOrder.order.id,
       });
@@ -210,9 +209,10 @@ const Cart = ({ navigation }) => {
 
   return (
     <>
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           backgroundColor: '#e5e7eb',
+          paddingBottom: 58,
         }}>
         <View
           style={{
@@ -290,7 +290,7 @@ const Cart = ({ navigation }) => {
             <Text fontWeight={600}>₹{dataCart.cart.totalPrice}</Text>
           </View>
         </View>
-      </View>
+      </ScrollView>
       <View
         style={{
           position: 'absolute',
@@ -302,7 +302,7 @@ const Cart = ({ navigation }) => {
         <TouchableHighlight
           onPress={() => mutateAddOrder()}
           style={{
-            backgroundColor: '#15803d',
+            backgroundColor: '#0AAD0A',
             padding: 8,
             paddingHorizontal: 16,
           }}

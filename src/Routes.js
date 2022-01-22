@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as api from './api';
@@ -11,11 +11,19 @@ import Category from './screens/Category';
 import Cart from './screens/Cart';
 import Orders from './screens/Orders';
 import Order from './screens/Order';
+import SplashScreen from 'react-native-splash-screen';
+import Search from './screens/Search';
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   const { data, isLoading } = useQuery('getUser', api.getUser);
+
+  useEffect(() => {
+    if (!isLoading) {
+      SplashScreen.hide();
+    }
+  }, [isLoading]);
 
   if (data?.user) {
     return (
@@ -84,6 +92,13 @@ const Routes = () => {
               elevation: 0,
             },
             headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

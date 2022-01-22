@@ -21,7 +21,7 @@ const Button = ({
         <View
           style={[
             {
-              backgroundColor: '#15803d',
+              backgroundColor: '#0AAD0A',
               height: 48,
               justifyContent: 'center',
               alignItems: 'center',

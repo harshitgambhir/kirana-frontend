@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Kirana.app"
-               BlueprintName = "Kirana"
-               ReferencedContainer = "container:Kirana.xcodeproj">
+               BuildableName = "Hurry.app"
+               BlueprintName = "Hurry"
+               ReferencedContainer = "container:Hurry.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "KiranaTests.xctest"
-               BlueprintName = "KiranaTests"
-               ReferencedContainer = "container:Kirana.xcodeproj">
+               BuildableName = "HurryTests.xctest"
+               BlueprintName = "HurryTests"
+               ReferencedContainer = "container:Hurry.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Kirana.app"
-            BlueprintName = "Kirana"
-            ReferencedContainer = "container:Kirana.xcodeproj">
+            BuildableName = "Hurry.app"
+            BlueprintName = "Hurry"
+            ReferencedContainer = "container:Hurry.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Kirana.app"
-            BlueprintName = "Kirana"
-            ReferencedContainer = "container:Kirana.xcodeproj">
+            BuildableName = "Hurry.app"
+            BlueprintName = "Hurry"
+            ReferencedContainer = "container:Hurry.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

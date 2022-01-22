@@ -156,7 +156,7 @@ const Login = ({ route, navigation }) => {
                 textStyle={{
                   color: '#666666',
                   marginLeft: 8,
-                  color: '#15803d',
+                  color: '#0AAD0A',
                 }}
                 onPress={() => {
                   mutateSendOtp({

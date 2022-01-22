@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Image,
   ScrollView,
-  StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -12,13 +11,12 @@ import Text from '../components/Text';
 import * as api from '../api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Loader from '../components/Loader';
-import { Search, User } from 'react-native-feather';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { useEffect } from 'react/cjs/react.development';
-import Button from '../components/Button';
-import QuantityButton from '../components/QuantityButton';
 import FloatingCart from '../components/FloatingCart';
-import { add, subtract } from '../utils';
+import SearchInput from '../components/SearchInput';
+import QuantityButton from '../components/QuantityButton';
+import { useDebounce } from '../hooks';
+import { subtract, add } from '../utils';
+import Button from '../components/Button';
 
 const Item = ({ id, name, price, extra, cart, image, quantity }) => {
   const product = cart.products.find(product => product.id === id);
@@ -198,167 +196,78 @@ const Item = ({ id, name, price, extra, cart, image, quantity }) => {
   );
 };
 
-const TabScene = ({ products, cart }) => {
-  if (!products.length || !cart) {
-    return (
-      <Loader
-        containerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      />
-    );
-  }
-
-  const renderItem = ({ item }) => {
-    return <Item {...item} cart={cart} />;
-  };
-
-  return (
-    <FlatList
-      data={products}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      ItemSeparatorComponent={() => {
-        return (
-          <View
-            style={{
-              height: 1,
-              backgroundColor: '#eee',
-            }}
-          />
-        );
-      }}
-      ListFooterComponent={() => (
-        <View
-          style={{
-            paddingBottom: 58,
-          }}
-        />
-      )}
-    />
-  );
-};
-
-const Category = ({ route, navigation }) => {
-  const { data, isLoading, isSuccess } = useQuery(
-    ['getCategories2', route.params.id],
-    () => api.getCategories2(route.params.id),
-  );
-
-  const [index, setIndex] = useState(0);
-  const [routes, setRoutes] = useState([]);
-  const [products, setProducts] = useState({});
-  const currentCategoryId = data?.categories[index].id;
-
-  const {
-    mutate: mutateGetProducts,
-    isSuccess: isSuccessGetProducts,
-    data: dataProducts,
-  } = useMutation(['getProducts', currentCategoryId], () =>
-    api.getProducts(currentCategoryId),
-  );
+const Search = ({ navigation }) => {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 500);
 
   const { data: dataGetCart } = useQuery('getCart', api.getCart);
 
-  useEffect(() => {
-    if (isSuccess) {
-      setRoutes(
-        data.categories.map(category => {
-          return {
-            key: category.id,
-            title: category.name,
-          };
-        }),
-      );
-    }
-  }, [isSuccess]);
+  const {
+    mutate,
+    data,
+    isLoading: isLoading,
+    reset,
+  } = useMutation('searchProducts', api.searchProducts);
 
   useEffect(() => {
-    if (isSuccessGetProducts) {
-      setProducts({
-        ...products,
-        [data?.categories[index].id]: dataProducts?.products,
+    if (debouncedQuery) {
+      mutate({
+        query: debouncedQuery,
       });
+    } else {
+      reset();
     }
-  }, [isSuccessGetProducts]);
+  }, [debouncedQuery]);
 
-  useEffect(() => {
-    if (data?.categories && !products[currentCategoryId]) {
-      mutateGetProducts(currentCategoryId);
-    }
-  }, [index, data?.categories]);
-
-  if (!data?.categories || !routes.length) {
-    return (
-      <Loader
-        containerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      />
-    );
-  }
-
-  const renderScene = SceneMap(
-    routes.reduce(
-      (obj, item, _index) => (
-        (obj[item.key] = () => (
-          <TabScene
-            products={products[item.key] || []}
-            cart={dataGetCart?.cart}
-          />
-        )),
-        obj
-      ),
-      {},
-    ),
-  );
-
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      scrollEnabled
-      indicatorStyle={styles.indicator}
-      style={styles.tabbar}
-      labelStyle={styles.label}
-      tabStyle={styles.tabStyle}
-      renderLabel={({ route }) => <Text fontWeight={800}>{route.title}</Text>}
-    />
-  );
-
-  const handleIndexChange = index => {
-    setIndex(index);
+  const renderItem = ({ item }) => {
+    return <Item {...item} cart={dataGetCart.cart} />;
   };
 
   return (
     <>
-      <TabView
-        navigationState={{
-          index,
-          routes,
+      <SearchInput
+        containerStyle={{
+          padding: 16,
         }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={handleIndexChange}
+        onChangeText={setQuery}
+        autoFocus={true}
       />
+      {isLoading || !dataGetCart ? (
+        <Loader
+          containerStyle={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        />
+      ) : (
+        <FlatList
+          data={data?.products}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={() => {
+            return (
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: '#eee',
+                }}
+              />
+            );
+          }}
+          ListFooterComponent={() => (
+            <View
+              style={{
+                paddingBottom: 58,
+              }}
+            />
+          )}
+        />
+      )}
+
       <FloatingCart />
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  tabbar: {
-    backgroundColor: '#fff',
-  },
-  indicator: {
-    backgroundColor: '#000',
-  },
-  tabStyle: {
-    width: 'auto',
-  },
-});
-
-export default Category;
+export default Search;

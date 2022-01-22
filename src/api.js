@@ -52,7 +52,12 @@ export const getCart = () => api.get('/cart').then(res => res.data);
 
 export const addOrder = data => api.post(`/order`, data).then(res => res.data);
 
-export const searchProducts = () => api.get(`/search`).then(res => res.data);
+export const searchProducts = params =>
+  api
+    .get(`/search`, {
+      params,
+    })
+    .then(res => res.data);
 
 export const getShop = () => api.get('/shop').then(res => res.data);
 
