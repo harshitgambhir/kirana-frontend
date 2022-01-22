@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import QuantityButton from '../components/QuantityButton';
 import { add, subtract } from '../utils';
 import { ChevronRight, ShoppingBag } from 'react-native-feather';
+import { useEffect } from 'react/cjs/react.development';
 
 const Item = ({ product: { id, name, price, extra, quantity }, cart }) => {
   const queryClient = useQueryClient();
@@ -154,6 +155,37 @@ const Cart = ({ navigation }) => {
 
   const { data: dataCart } = useQuery('getCart', api.getCart);
 
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: mutateAddOrder,
+    isLoading: isLoadingAddOrder,
+    isSuccess: isSuccessAddOrder,
+    data: dataAddOrder,
+  } = useMutation(api.addOrder, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('getOrders');
+      queryClient.setQueryData('getCart', () => {
+        return {
+          cart: {
+            totalPrice: '0.00',
+            totalQuantity: 0,
+            products: [],
+          },
+        };
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccessAddOrder) {
+      console.log('aaaa');
+      navigation.navigate('Order', {
+        id: dataAddOrder.order.id,
+      });
+    }
+  }, [isSuccessAddOrder]);
+
   if (!dataShop || !dataCart) {
     return (
       <Loader
@@ -254,7 +286,7 @@ const Cart = ({ navigation }) => {
               justifyContent: 'space-between',
               paddingVertical: 16,
             }}>
-            <Text fontWeight={600}>bill total</Text>
+            <Text fontWeight={600}>total</Text>
             <Text fontWeight={600}>₹{dataCart.cart.totalPrice}</Text>
           </View>
         </View>
@@ -268,7 +300,7 @@ const Cart = ({ navigation }) => {
           width: '100%',
         }}>
         <TouchableHighlight
-          onPress={() => navigation.navigate('Orders')}
+          onPress={() => mutateAddOrder()}
           style={{
             backgroundColor: '#15803d',
             padding: 8,
@@ -320,7 +352,7 @@ const Cart = ({ navigation }) => {
                   color: '#fff',
                   fontSize: 16,
                 }}>
-                order
+                place order
               </Text>
               <ChevronRight
                 color="#fff"
@@ -334,6 +366,21 @@ const Cart = ({ navigation }) => {
           </View>
         </TouchableHighlight>
       </View>
+      {isLoadingAddOrder ? (
+        <Loader
+          containerStyle={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'rgba(255,255,255,0.7)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        />
+      ) : null}
     </>
   );
 };

@@ -10,6 +10,7 @@ import Account from './screens/Account';
 import Category from './screens/Category';
 import Cart from './screens/Cart';
 import Orders from './screens/Orders';
+import Order from './screens/Order';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,18 @@ const Routes = () => {
           component={Orders}
           options={{
             headerTitle: 'my orders',
+            headerStyle: {
+              backgroundColor: '#ffffff',
+              elevation: 0,
+            },
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="Order"
+          component={Order}
+          options={{
+            headerTitle: 'order details',
             headerStyle: {
               backgroundColor: '#ffffff',
               elevation: 0,
