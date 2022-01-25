@@ -172,7 +172,7 @@ const Item = ({ id, name, price, extra, cart, image, quantity }) => {
           {product ? (
             <QuantityButton
               value={value}
-              max={quantity > 10 ? 10 : quantity}
+              max={value > 10 ? 10 : value}
               onMinusPress={onMinusPress}
               onPlusPress={onPlusPress}
             />

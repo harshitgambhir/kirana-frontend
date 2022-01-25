@@ -4,12 +4,14 @@ import Text from '../components/Text';
 import moment from 'moment';
 import { useQuery } from 'react-query';
 import * as api from '../api';
-import { Loader } from 'react-native-feather';
+import Loader from '../components/Loader';
 
 const Orders = ({ navigation }) => {
-  const { data } = useQuery('getOrders', api.getOrders);
+  const { data, isFetching } = useQuery('getOrders', api.getOrders, {
+    refetchOnMount: 'always',
+  });
 
-  if (!data) {
+  if (isFetching || !data) {
     return (
       <Loader
         containerStyle={{

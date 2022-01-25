@@ -151,9 +151,21 @@ const Item = ({ product: { id, name, price, extra, quantity }, cart }) => {
 };
 
 const Cart = ({ navigation }) => {
-  const { data: dataShop } = useQuery('getShop', api.getShop);
+  const { data: dataShop, isFetching: isFetchingShop } = useQuery(
+    'getShop',
+    api.getShop,
+    {
+      refetchOnMount: 'always',
+    },
+  );
 
-  const { data: dataCart } = useQuery('getCart', api.getCart);
+  const { data: dataCart, isFetching: isFetchingCart } = useQuery(
+    'getCart',
+    api.getCart,
+    {
+      refetchOnMount: 'always',
+    },
+  );
 
   const queryClient = useQueryClient();
 
@@ -185,7 +197,7 @@ const Cart = ({ navigation }) => {
     }
   }, [isSuccessAddOrder]);
 
-  if (!dataShop || !dataCart) {
+  if (isFetchingShop || isFetchingCart || !dataShop || !dataCart) {
     return (
       <Loader
         containerStyle={{
@@ -329,7 +341,7 @@ const Cart = ({ navigation }) => {
                     color: '#fff',
                     fontSize: 13,
                   }}>
-                  {dataCart.cart.totalQuantity} items
+                  {dataCart.cart.totalQuantity} item(s)
                 </Text>
                 <Text
                   fontWeight={800}

@@ -61,10 +61,14 @@ const Item = ({ product: { id, name, price, extra, quantity } }) => {
 };
 
 const Order = ({ route, navigation }) => {
-  const { data } = useQuery(['getOrder', route.params.id], () =>
-    api.getOrder(route.params.id),
+  const { data, isFetching } = useQuery(
+    ['getOrder', route.params.id],
+    () => api.getOrder(route.params.id),
+    {
+      refetchOnMount: 'always',
+    },
   );
-  if (!data) {
+  if (isFetching || !data) {
     return (
       <Loader
         containerStyle={{
