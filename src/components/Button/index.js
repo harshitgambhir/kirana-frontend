@@ -7,6 +7,7 @@ const Button = ({
   containerStyle,
   loading,
   disabled,
+  disabled2,
   buttonStyle,
   textStyle,
   textProps,
@@ -17,11 +18,11 @@ const Button = ({
       <TouchableOpacity
         activeOpacity={0.5}
         {...props}
-        disabled={loading || disabled}>
+        disabled={loading || disabled || disabled2}>
         <View
           style={[
             {
-              backgroundColor: '#0AAD0A',
+              backgroundColor: disabled2 ? '#9ca3af' : '#0AAD0A',
               height: 48,
               justifyContent: 'center',
               alignItems: 'center',

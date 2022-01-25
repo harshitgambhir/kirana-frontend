@@ -176,9 +176,10 @@ const Item = ({ id, name, price, extra, cart, image, quantity }) => {
             />
           ) : (
             <Button
+              disabled2={quantity === 0}
               buttonStyle={{
                 height: 31,
-                width: 80,
+                width: quantity === 0 ? 100 : 80,
               }}
               textProps={{
                 fontWeight: 400,
@@ -187,7 +188,7 @@ const Item = ({ id, name, price, extra, cart, image, quantity }) => {
                 fontSize: 14,
               }}
               onPress={onAddPress}>
-              add
+              {quantity === 0 ? 'out of stock' : 'add'}
             </Button>
           )}
         </View>
