@@ -9,25 +9,25 @@ const Text = ({ children, textStyle, fontWeight, ...props }) => {
     case 400:
       style = {
         ...style,
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'Inter-Regular',
       };
       break;
-    case 600:
+    case 500:
       style = {
         ...style,
-        fontFamily: 'NunitoSans-SemiBold',
+        fontFamily: 'Inter-Medium',
       };
       break;
-    case 800:
+    case 700:
       style = {
         ...style,
-        fontFamily: 'NunitoSans-ExtraBold',
+        fontFamily: 'Inter-Bold',
       };
       break;
     default:
       style = {
         ...style,
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'Inter-Regular',
       };
       break;
   }

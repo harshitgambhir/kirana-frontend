@@ -41,32 +41,4 @@ export const login = data =>
 
 export const logout = () => api.post('/logout').then(res => res.data);
 
-export const getUser = () => api.get('/user').then(res => res.data);
-
-export const updateLocation = data =>
-  api.put(`/user/location`, data).then(res => res.data);
-
-export const updateCart = data => api.put(`/cart`, data).then(res => res.data);
-
-export const getCart = () => api.get('/cart').then(res => res.data);
-
-export const addOrder = data => api.post(`/order`, data).then(res => res.data);
-
-export const searchProducts = params =>
-  api
-    .get(`/search`, {
-      params,
-    })
-    .then(res => res.data);
-
-export const getShop = () => api.get('/shop').then(res => res.data);
-
-export const getCategories = () => api.get('/categories').then(res => res.data);
-
-export const getCategories2 = id =>
-  api.get(`/categories/${id}/categories2`).then(res => res.data);
-export const getProducts = id =>
-  api.get(`/categories2/${id}/products`).then(res => res.data);
-
-export const getOrders = () => api.get(`/orders`).then(res => res.data);
-export const getOrder = id => api.get(`/orders/${id}`).then(res => res.data);
+export const getProfile = () => api.get('/profile').then(res => res.data);

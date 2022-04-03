@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableNativeFeedback, ActivityIndicator } from 'react-native';
 import Text from '../Text';
 
 const Button = ({
@@ -7,7 +7,6 @@ const Button = ({
   containerStyle,
   loading,
   disabled,
-  disabled2,
   buttonStyle,
   textStyle,
   textProps,
@@ -15,19 +14,16 @@ const Button = ({
 }) => {
   return (
     <View style={containerStyle}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        {...props}
-        disabled={loading || disabled || disabled2}>
+      <TouchableNativeFeedback {...props} disabled={loading || disabled}>
         <View
           style={[
             {
-              backgroundColor: disabled2 ? '#9ca3af' : '#0AAD0A',
+              backgroundColor: '#3861fb',
               height: 48,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 4,
-              opacity: disabled ? 0.6 : 1,
+              opacity: disabled ? 0.5 : 1,
             },
             buttonStyle,
           ]}>
@@ -35,7 +31,7 @@ const Button = ({
             <ActivityIndicator color="#fff" size="large" />
           ) : (
             <Text
-              fontWeight={800}
+              fontWeight={700}
               textStyle={[
                 {
                   fontSize: 16,
@@ -48,7 +44,7 @@ const Button = ({
             </Text>
           )}
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     </View>
   );
 };

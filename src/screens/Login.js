@@ -12,7 +12,7 @@ const Schema = Yup.object().shape({
 });
 
 const Login = ({ route, navigation }) => {
-  const { mobile } = route.params;
+  const { email } = route.params;
   const formikRef = useRef();
   const [seconds, setSeconds] = useState(0);
 
@@ -33,7 +33,7 @@ const Login = ({ route, navigation }) => {
     api.login,
     {
       onSuccess: newData => {
-        queryClient.setQueryData('getUser', newData);
+        queryClient.setQueryData('getProfile', newData);
       },
     },
   );
@@ -49,7 +49,7 @@ const Login = ({ route, navigation }) => {
   const onSubmit = async values => {
     await CookieManager.clearAll();
     mutate({
-      mobile,
+      email,
       otp: values.otp,
     });
   };
@@ -62,36 +62,40 @@ const Login = ({ route, navigation }) => {
       }}
       validationSchema={Schema}
       validateOnMount>
-      {({ handleChange, handleBlur, values, errors, isValid }) => (
+      {({ handleChange, handleBlur, values, errors, touched }) => (
         <View
           style={{
             flex: 1,
             justifyContent: 'space-between',
-            paddingHorizontal: 16,
+            paddingHorizontal: 20,
             paddingBottom: 18,
           }}>
           <View>
             <Text
-              fontWeight={800}
+              fontWeight={700}
               textStyle={{
                 fontSize: 24,
               }}>
               Verification code
             </Text>
             <Text textStyle={{ marginTop: 8, color: '#666666' }}>
-              We've sent a verification code on +91 {mobile} to proceed
+              We've sent a verification code on {email} to proceed
             </Text>
 
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                marginTop: 18,
               }}>
               <TextInput
                 style={{
-                  fontSize: 24,
-                  fontFamily: 'NunitoSans-ExtraBold',
+                  fontSize: 18,
+                  fontFamily: 'Inter-Medium',
                   width: '100%',
+                  backgroundColor: '#eee',
+                  borderRadius: 4,
+                  paddingHorizontal: 16,
                 }}
                 placeholder="Enter code"
                 maxLength={4}
@@ -130,7 +134,7 @@ const Login = ({ route, navigation }) => {
                 resend otp in
               </Text>
               <Text
-                fontWeight={800}
+                fontWeight={700}
                 textStyle={{
                   marginLeft: 8,
                 }}>
@@ -152,19 +156,19 @@ const Login = ({ route, navigation }) => {
                 didn't receive code
               </Text>
               <Text
-                fontWeight={800}
+                fontWeight={700}
                 textStyle={{
                   color: '#666666',
                   marginLeft: 8,
-                  color: '#0AAD0A',
+                  color: '#3861fb',
                 }}
                 onPress={() => {
                   mutateSendOtp({
-                    mobile,
+                    email,
                   });
                   setSeconds(60);
                 }}>
-                resend otp
+                resend code
               </Text>
             </View>
           )}

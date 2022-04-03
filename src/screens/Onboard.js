@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { TextInput, View } from 'react-native';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import * as api from '../api';
@@ -8,33 +8,32 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const Schema = Yup.object().shape({
-  email: Yup.string('')
-    .email('Please enter a valid email address')
-    .required(''),
+  name: Yup.string('').min(1, '').max(50, '').required(''),
 });
 
-const SendOtp = ({ navigation }) => {
+const Onboard = ({ navigation }) => {
   const formikRef = useRef();
 
+  const queryClient = useQueryClient();
   const { mutate, isLoading, isError, error, isSuccess } = useMutation(
-    'sendOtp',
-    api.sendOtp,
+    'editProfile',
+    api.editProfile,
+    {
+      onSuccess: newData => {
+        queryClient.setQueryData('getProfile', newData);
+      },
+    },
   );
 
   useEffect(() => {
     if (isError) {
       formikRef.current.setFieldError(error?.error?.key, error?.error?.message);
     }
-    if (isSuccess) {
-      navigation.navigate('Login', {
-        email: formikRef.current.values.email,
-      });
-    }
-  }, [isSuccess, isError]);
+  }, [isError]);
 
   const onSubmit = values => {
     mutate({
-      email: values.email,
+      name: values.name,
     });
   };
 
@@ -42,7 +41,7 @@ const SendOtp = ({ navigation }) => {
     <Formik
       innerRef={formikRef}
       initialValues={{
-        email: '',
+        name: '',
       }}
       onSubmit={onSubmit}
       validationSchema={Schema}
@@ -61,7 +60,7 @@ const SendOtp = ({ navigation }) => {
             flex: 1,
             justifyContent: 'space-between',
             paddingHorizontal: 20,
-            paddingBottom: 18,
+            paddingVertical: 24,
           }}>
           <View>
             <Text
@@ -69,12 +68,8 @@ const SendOtp = ({ navigation }) => {
               textStyle={{
                 fontSize: 24,
               }}>
-              What's your email address?
+              What's your full name?
             </Text>
-            <Text textStyle={{ marginTop: 8, color: '#666666' }}>
-              We will send an email with a verification code to this email
-            </Text>
-
             <View
               style={{
                 flexDirection: 'row',
@@ -90,20 +85,19 @@ const SendOtp = ({ navigation }) => {
                   borderRadius: 4,
                   paddingHorizontal: 16,
                 }}
-                placeholder="Email address"
-                keyboardType="email-address"
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
+                placeholder="Full name"
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
                 autoFocus
               />
             </View>
-            {touched.email && errors.email ? (
+            {touched.name && errors.name ? (
               <Text
                 textStyle={{
                   color: 'red',
                 }}>
-                {errors.email}
+                {errors.name}
               </Text>
             ) : null}
           </View>
@@ -111,7 +105,7 @@ const SendOtp = ({ navigation }) => {
             loading={isLoading}
             disabled={!isValid}
             onPress={handleSubmit}>
-            Get Code
+            Submit
           </Button>
         </View>
       )}
@@ -119,4 +113,4 @@ const SendOtp = ({ navigation }) => {
   );
 };
 
-export default SendOtp;
+export default Onboard;

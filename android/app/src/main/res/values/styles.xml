@@ -5,9 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
-        <item name="colorPrimaryDark">#0AAD0A</item>
+        <item name="colorPrimaryDark">#3861fb</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name ="android:colorBackground">#0AAD0A</item>
-        <item name="android:navigationBarColor">#0AAD0A</item>
+        <item name ="android:colorBackground">#3861fb</item>
+        <item name="android:navigationBarColor">#3861fb</item>
     </style>
 </resources>
